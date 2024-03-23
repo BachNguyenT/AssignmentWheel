@@ -1,25 +1,75 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from "react";
+import "./App.css";
 
-function App() {
+const App = () => {
+  const [chosen, setChosen] = useState();
+  const [teams, setTeams] = useState([
+    "CREAM",
+    "YELLOW",
+    "GREEN",
+    "PINK",
+    "ORANGE",
+  ]);
+
+  useEffect(() => {
+    !teams.length && setTeams(["CREAM", "YELLOW", "GREEN", "PINK", "ORANGE"]);
+  }, [teams.length]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.keyCode === 32) {
+        // Check if space key is pressed
+        clicked();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
+
+  const clicked = () => {
+    const teamsCopy = [...teams];
+    if (teamsCopy.length > 0) {
+      // Generate a random index
+      const randomIndex = Math.floor(Math.random() * teamsCopy.length);
+
+      // Get the random number
+      const randomNum = teamsCopy[randomIndex];
+
+      // Remove the random number from the array
+      teamsCopy.splice(randomIndex, 1);
+
+      // Update the state with the new array
+      setTeams(teamsCopy);
+
+      // Log the picked number
+      console.log("Picked Number:", randomNum);
+      setChosen(randomNum);
+    } else {
+      console.log("RUNNING");
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div
+      className="App"
+      style={{ backgroundColor: chosen === "CREAM" ? "#FFFDD0" : chosen }}
+    >
+      <div className="Display">
+        <p className="Title">YOUR TEAM IS:</p>
+        <h1 className="Team">{chosen ? chosen : ""}</h1>
+      </div>
+
+      <button
+        className="Button"
+        onClick={() => {
+          clicked();
+        }}
+      />
     </div>
   );
-}
-
+};
 export default App;
