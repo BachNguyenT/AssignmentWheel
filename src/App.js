@@ -15,21 +15,6 @@ const App = () => {
     !teams.length && setTeams(["CREAM", "YELLOW", "GREEN", "PINK", "ORANGE"]);
   }, [teams.length]);
 
-  useEffect(() => {
-    const handleKeyDown = (event) => {
-      if (event.keyCode === 32) {
-        // Check if space key is pressed
-        clicked();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, []);
-
   const clicked = () => {
     const teamsCopy = [...teams];
     if (teamsCopy.length > 0) {
@@ -46,7 +31,7 @@ const App = () => {
       setTeams(teamsCopy);
 
       // Log the picked number
-      console.log("Picked Number:", randomNum);
+      console.log("Picked Color:", randomNum, teams);
       setChosen(randomNum);
     } else {
       console.log("RUNNING");
